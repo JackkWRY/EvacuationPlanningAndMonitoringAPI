@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    container_name: evac-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__Redis=redis:6379
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: evac-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  redis_data:
